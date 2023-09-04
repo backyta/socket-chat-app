@@ -13,7 +13,7 @@ class Usuarios {
 
     getPersona( id ){
         let persona = this.personas.filter( persona => persona.id === id )[0]; // retorna un nuevo array pero solo su primer pos osea el primer objeto
-        console.log(persona);
+        console.log({persona});
         return persona
     }
 

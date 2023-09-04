@@ -31,16 +31,21 @@ io.on('connection', (client) => {
         //* Necesito mandarlo unicamente alas personas que esten en la misma sala no a todas
         client.broadcast.to( data.sala ).emit('listaPersonas', usuarios.getPersonasPorSala( data.sala )); // cada vez que una persona entra o sale del chat
 
+        //Notificar cuando una persona entra al chat
+        client.broadcast.to( data.sala ).emit('crearMensaje', crearMensaje('Administrador', `${ data.nombre } se unio`) );
+
         return callback( usuarios.getPersonas( data.sala ) );
     });
 
-    client.on('crearMensaje', ( data ) => {
+    client.on('crearMensaje', ( data, callback ) => {
 
         let persona = usuarios.getPersona( client.id )
 
         let mensaje = crearMensaje( persona , data.mensaje );
 
-        client.broadcast.to( persona.sala ).emit('crearMensaje', mensaje)
+        client.broadcast.to( persona.sala ).emit('crearMensaje', mensaje);
+        // client.broadcast.to( persona.sala ).emit('crearMensaje', crearMensaje('Administrador', `${ persona.nombre } se unio`) );
+        callback( mensaje );
     })
 
 
